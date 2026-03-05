@@ -3,10 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ivan Maia — Imersão</title>
+  <title>Ivan Maia — Em Busca do Sentido da Vida</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="shortcut icon" href="./logo-ivan.png" type="image/x-icon">
   <style>
     /* ── RESET & BASE ─────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -486,6 +488,10 @@
     }
 
     /* Logo text mark — replace with <img> if you have a file */
+      .logo{
+        width: 6%!important;
+      }
+
     .logo-mark {
       display: flex;
       flex-direction: column;
@@ -582,6 +588,18 @@
       .copy-side p { max-width: 100%; }
     }
 
+    @media (min-width: 375px){
+      .logo{
+        width: 22%;
+      }
+    }
+
+    @media (min-width: 800px){
+      .logo{
+        width: 16%;
+      }
+    }
+
     /* ── SEPARATOR BETWEEN SECTIONS ──────────────────────────── */
     .section-sep {
       width: 100%;
@@ -625,7 +643,7 @@
           <svg width="22" height="22" viewBox="0 0 22 22"><polygon points="6,3 19,11 6,19"/></svg>
         </div>
         <p>Assista ao vídeo</p>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/hAJ21BzwcAk?si=1DrRAFr3mQLj0ibl&amp;controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/5hxMvTD5dYo?si=YPT7UEkN_Z5rfDaM&amp;controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       </div>
       <!--
       <div class="player-placeholder" id="playerPlaceholder">
@@ -697,7 +715,7 @@
             Quero participar da imersão
           </button>
 
-          <p class="form-privacy">🔒 Seus dados estão seguros. Sem spam.</p>
+          <p class="form-privacy"><i class="fa-solid fa-lock"></i> Seus dados estão seguros. Sem spam.</p>
         </div>
 
         <div class="form-success" id="formSuccess">
@@ -723,9 +741,7 @@
       <img src="logo-ivan-maia-bw.png" alt="Ivan Maia" style="height:52px; filter:invert(1);">
     -->
     <div class="logo-mark">
-      <span class="logo-name">Ivan Maia</span>
-      <div class="logo-rule"></div>
-      <span class="logo-tag">Inteligência Emocional</span>
+      <img src="./logo-ivan.png" alt="logo ivan" class="logo">
     </div>
     <p class="footer-copy">&copy; 2025 Ivan Maia · Todos os direitos reservados.</p>
   </footer>
