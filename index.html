@@ -70,7 +70,6 @@
       inset: 0;
       background:
         linear-gradient(180deg, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0.85) 60%, var(--bg) 100%),
-        /* Placeholder gradient — replace with your image via inline style */
         radial-gradient(ellipse at 30% 40%, #1a1208 0%, transparent 60%),
         radial-gradient(ellipse at 75% 20%, #0d1018 0%, transparent 55%),
         linear-gradient(135deg, #0e0c09 0%, #0a0d12 50%, #09090a 100%);
@@ -434,6 +433,12 @@
 
     .btn-submit:active { transform: translateY(0); }
 
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
     .form-privacy {
       margin-top: 14px;
       text-align: center;
@@ -487,10 +492,7 @@
       gap: 20px;
     }
 
-    /* Logo text mark — replace with <img> if you have a file */
-      .logo{
-        width: 6%!important;
-      }
+    .logo { width: 6%!important; }
 
     .logo-mark {
       display: flex;
@@ -588,23 +590,139 @@
       .copy-side p { max-width: 100%; }
     }
 
-    @media (min-width: 375px){
-      .logo{
-        width: 22%;
-      }
-    }
-
-    @media (min-width: 800px){
-      .logo{
-        width: 16%;
-      }
-    }
+    @media (min-width: 375px) { .logo { width: 22%; } }
+    @media (min-width: 800px) { .logo { width: 16%; } }
 
     /* ── SEPARATOR BETWEEN SECTIONS ──────────────────────────── */
     .section-sep {
       width: 100%;
       height: 1px;
       background: linear-gradient(to right, transparent, var(--border), transparent);
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       ── MODAL ────────────────────────────────────────────────
+    ══════════════════════════════════════════════════════════ */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.78);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      animation: modalFadeIn 0.3s ease both;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    .modal-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 52px 44px 44px;
+      max-width: 440px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+      animation: modalSlideUp 0.38s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    /* gold top line */
+    .modal-box::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      border-radius: 12px 12px 0 0;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    @keyframes modalSlideUp {
+      from { opacity: 0; transform: translateY(28px) scale(0.96); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .modal-icon {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      border: 1.5px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 28px;
+      background: rgba(201,169,110,0.05);
+    }
+
+    .modal-icon svg { stroke: var(--gold); fill: none; }
+
+    /* warning state — for duplicates */
+    .modal-icon.warn {
+      border-color: #d4913a;
+      background: rgba(212,145,58,0.06);
+    }
+    .modal-icon.warn svg { stroke: #d4913a; }
+
+    .modal-box h4 {
+      font-family: var(--font-serif);
+      font-size: 1.9rem;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+
+    .modal-box .modal-msg {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .modal-countdown {
+      margin-top: 24px;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+    }
+
+    .modal-bar-wrap {
+      width: 100%;
+      height: 2px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 2px;
+      margin-top: 12px;
+      overflow: hidden;
+    }
+
+    .modal-bar {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, var(--gold-dim), var(--gold));
+      border-radius: 2px;
+      transform-origin: left;
+      /* duration set via JS */
+    }
+
+    @keyframes barShrink {
+      from { transform: scaleX(1); }
+      to   { transform: scaleX(0); }
+    }
+
+    @media (max-width: 480px) {
+      .modal-box { padding: 40px 24px 32px; }
+      .modal-box h4 { font-size: 1.55rem; }
     }
   </style>
 </head>
@@ -621,23 +739,11 @@
     </div>
 
     <div class="player-wrap">
-      <!-- CORNER ACCENTS -->
       <span class="player-corner tl"></span>
       <span class="player-corner tr"></span>
       <span class="player-corner bl"></span>
       <span class="player-corner br"></span>
 
-      <!-- ══ INSIRA SEU VÍDEO AQUI ══
-           Opção 1 — YouTube:
-           <iframe src="https://www.youtube.com/embed/SEU_VIDEO_ID?rel=0&modestbranding=1" allowfullscreen allow="autoplay; encrypted-media"></iframe>
-
-           Opção 2 — Vturb / Pandavideo / outro player:
-           Substitua o bloco .player-placeholder pelo embed do seu player.
-
-           Por enquanto exibimos o placeholder abaixo:
-      -->
-
-    
       <div class="player-placeholder" id="playerPlaceholder">
         <div class="play-btn">
           <svg width="22" height="22" viewBox="0 0 22 22"><polygon points="6,3 19,11 6,19"/></svg>
@@ -645,14 +751,6 @@
         <p>Assista ao vídeo</p>
         <iframe width="560" height="315" src="https://www.youtube.com/embed/5hxMvTD5dYo?si=YPT7UEkN_Z5rfDaM&amp;controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       </div>
-      <!--
-      <div class="player-placeholder" id="playerPlaceholder">
-        <div class="play-btn">
-          <svg width="22" height="22" viewBox="0 0 22 22"><polygon points="6,3 19,11 6,19"/></svg>
-        </div>
-        <p>Assista ao vídeo</p>
-      </div>
-      -->
     </div>
 
     <div class="scroll-hint">
@@ -711,7 +809,7 @@
             <input type="tel" id="whatsapp" name="whatsapp" placeholder="(11) 99999-9999" autocomplete="tel" />
           </div>
 
-          <button class="btn-submit" onclick="handleSubmit()">
+          <button class="btn-submit" id="btnSubmit" onclick="handleSubmit()">
             Quero participar da imersão
           </button>
 
@@ -736,18 +834,38 @@
 
   <!-- ═══════════════ FOOTER ═══════════════ -->
   <footer>
-    <!--
-      Se tiver logo em imagem, substitua o bloco .logo-mark por:
-      <img src="logo-ivan-maia-bw.png" alt="Ivan Maia" style="height:52px; filter:invert(1);">
-    -->
     <div class="logo-mark">
       <img src="./logo-ivan.png" alt="logo ivan" class="logo">
     </div>
     <p class="footer-copy">&copy; 2025 Ivan Maia · Todos os direitos reservados.</p>
   </footer>
 
+  <!-- ═══════════════ MODAL ═══════════════ -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-box">
+      <div class="modal-icon" id="modalIcon">
+        <svg id="modalIconSvg" width="28" height="28" viewBox="0 0 28 28" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></svg>
+      </div>
+      <h4 id="modalTitle"></h4>
+      <p class="modal-msg" id="modalMessage"></p>
+      <p class="modal-countdown" id="modalCountdown"></p>
+      <div class="modal-bar-wrap">
+        <div class="modal-bar" id="modalBar"></div>
+      </div>
+    </div>
+  </div>
+
   <script>
-    /* ── PHONE MASK ─────────────────────────────────────────── */
+    /* ════════════════════════════════════════════════════════════
+       ── CONFIGURAÇÃO — altere os valores abaixo ──────────────
+    ════════════════════════════════════════════════════════════ */
+    const API_URL           = 'https://script.google.com/macros/s/AKfycbwYZSJs5CAIcTbefcnGCnTbzwxzE_7KB9GHcsd-5GksUcUxBMAUXej3MyTR4Wvrjp0MaA/exec'; 
+    const WHATSAPP_GROUP    = 'https://chat.whatsapp.com/LINK'; // ← link do grupo
+    const REDIRECT_SECONDS  = 2;                                 // ← tempo antes do redirect
+
+    /* ════════════════════════════════════════════════════════════
+       ── PHONE MASK ────────────────────────────────────────────
+    ════════════════════════════════════════════════════════════ */
     document.getElementById('whatsapp').addEventListener('input', function (e) {
       let v = e.target.value.replace(/\D/g, '').slice(0, 11);
       if (v.length <= 10) {
@@ -758,12 +876,73 @@
       e.target.value = v;
     });
 
-    /* ── FORM SUBMIT ────────────────────────────────────────── */
-    function handleSubmit() {
+    /* ════════════════════════════════════════════════════════════
+       ── MODAL ─────────────────────────────────────────────────
+    ════════════════════════════════════════════════════════════ */
+    function openModal({ title, message, isWarning }) {
+      const overlay     = document.getElementById('modalOverlay');
+      const iconWrap    = document.getElementById('modalIcon');
+      const iconSvg     = document.getElementById('modalIconSvg');
+      const titleEl     = document.getElementById('modalTitle');
+      const msgEl       = document.getElementById('modalMessage');
+      const countdownEl = document.getElementById('modalCountdown');
+      const bar         = document.getElementById('modalBar');
+
+      /* content */
+      titleEl.textContent = title;
+      msgEl.textContent   = message;
+
+      /* icon shape */
+      if (isWarning) {
+        iconWrap.classList.add('warn');
+        /* warning circle with exclamation */
+        iconSvg.innerHTML =
+          '<circle cx="14" cy="14" r="11"/>' +
+          '<line x1="14" y1="9" x2="14" y2="15"/>' +
+          '<circle cx="14" cy="19" r="0.8" fill="currentColor" stroke="none"/>';
+        iconSvg.style.stroke = '#d4913a';
+      } else {
+        iconWrap.classList.remove('warn');
+        /* checkmark */
+        iconSvg.innerHTML = '<polyline points="5,15 11,21 23,8"/>';
+        iconSvg.style.stroke = '';
+      }
+
+      /* show overlay */
+      overlay.classList.add('active');
+
+      /* countdown text */
+      let remaining = REDIRECT_SECONDS;
+      countdownEl.textContent = `Redirecionando em ${remaining}s...`;
+
+      const tick = setInterval(() => {
+        remaining -= 1;
+        countdownEl.textContent = remaining > 0
+          ? `Redirecionando em ${remaining}s...`
+          : 'Redirecionando…';
+        if (remaining <= 0) clearInterval(tick);
+      }, 1000);
+
+      /* progress bar */
+      bar.style.animation = 'none';
+      void bar.offsetWidth; /* reflow to restart */
+      bar.style.animation = `barShrink ${REDIRECT_SECONDS}s linear forwards`;
+
+      /* redirect */
+      setTimeout(() => {
+        window.location.href = WHATSAPP_GROUP;
+      }, REDIRECT_SECONDS * 1000);
+    }
+
+    /* ════════════════════════════════════════════════════════════
+       ── FORM SUBMIT ───────────────────────────────────────────
+    ════════════════════════════════════════════════════════════ */
+    async function handleSubmit() {
       const nome     = document.getElementById('nome').value.trim();
       const email    = document.getElementById('email').value.trim();
-      const whatsapp = document.getElementById('whatsapp').value.trim();
+      const whatsapp = document.getElementById('whatsapp').value.replace(/\D/g, '');;
 
+      /* validation */
       if (!nome || !email || !whatsapp) {
         shake(document.querySelector('.form-card'));
         return;
@@ -776,22 +955,53 @@
         return;
       }
 
-      /* === Integre seu webhook / API aqui ===
-         fetch('/api/leads', {
-           method: 'POST',
-           headers: { 'Content-Type': 'application/json' },
-           body: JSON.stringify({ nome, email, whatsapp })
-         });
-      */
+      /* lock button */
+      const btn = document.getElementById('btnSubmit');
+      btn.disabled    = true;
+      btn.textContent = 'Enviando…';
 
-      document.getElementById('formContent').style.display = 'none';
-      const success = document.getElementById('formSuccess');
-      success.style.display = 'block';
-      success.style.animation = 'fadeUp 0.6s ease both';
+      try {
+        const res  = await fetch(API_URL, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ nome, email, whatsapp })
+        });
+
+        const data = await res.json();
+
+        /* ── duplicate lead ── */
+        if (data.success === false && data.message === 'Registro duplicado') {
+          openModal({
+            title:     'Você já está cadastrado',
+            message:   'Encontramos seu cadastro em nossa base. Você será redirecionado para o grupo do WhatsApp agora.',
+            isWarning: true
+          });
+          return;
+        }
+
+        /* ── general error ── */
+        if (!res.ok || data.success === false) {
+          throw new Error(data.message || 'Erro no servidor');
+        }
+
+        /* ── success ── */
+        openModal({
+          title:     'Inscrição confirmada!',
+          message:   'Recebemos seus dados com sucesso. Em instantes você será direcionado ao grupo do WhatsApp.',
+          isWarning: false
+        });
+
+      } catch (err) {
+        /* restore button on error */
+        btn.disabled    = false;
+        btn.textContent = 'Quero participar da imersão';
+        shake(document.querySelector('.form-card'));
+        console.error('Erro ao enviar formulário:', err);
+      }
     }
 
+    /* ── SHAKE ANIMATION ────────────────────────────────────── */
     function shake(el) {
-      el.style.animation = 'none';
       el.style.transition = 'transform 0.07s ease';
       let i = 0;
       const frames = [6, -6, 4, -4, 2, -2, 0];
@@ -807,26 +1017,18 @@
       run();
     }
 
-    /* ── CUSTOM HERO BG (placeholder) ──────────────────────── */
-    /* Para definir uma imagem de fundo personalizada no hero,
-       basta alterar a propriedade abaixo com o caminho da sua imagem:
-
-       document.getElementById('heroBg').style.backgroundImage =
-         "linear-gradient(180deg, rgba(10,10,10,0.6) 0%, rgba(10,10,10,0.9) 70%, #0a0a0a 100%), url('SUA-IMAGEM.jpg')";
-    */
-
     /* ── SCROLL-IN ANIMATIONS ───────────────────────────────── */
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) {
-          e.target.style.opacity = '1';
+          e.target.style.opacity   = '1';
           e.target.style.transform = 'translateY(0)';
         }
       });
     }, { threshold: 0.12 });
 
     document.querySelectorAll('.copy-side, .form-side').forEach(el => {
-      el.style.opacity = '0';
+      el.style.opacity   = '0';
       el.style.transform = 'translateY(28px)';
       el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
       io.observe(el);
