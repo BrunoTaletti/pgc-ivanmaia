@@ -859,7 +859,7 @@
     /* ════════════════════════════════════════════════════════════
        ── CONFIGURAÇÃO — altere os valores abaixo ──────────────
     ════════════════════════════════════════════════════════════ */
-    const API_URL           = 'https://script.google.com/macros/s/AKfycbwYZSJs5CAIcTbefcnGCnTbzwxzE_7KB9GHcsd-5GksUcUxBMAUXej3MyTR4Wvrjp0MaA/exec'; 
+    const API_URL           = 'https://script.google.com/macros/s/AKfycbwzGQHL6Sidv0zSLON24qHg8Ap9R1vKVRZ5HIfxOLvsOPwCq2MQ5oEOzkJjHeqALKsEtA/exec'; 
     const WHATSAPP_GROUP    = 'https://chat.whatsapp.com/LINK'; // ← link do grupo
     const REDIRECT_SECONDS  = 2;                                 // ← tempo antes do redirect
 
@@ -938,6 +938,8 @@
        ── FORM SUBMIT ───────────────────────────────────────────
     ════════════════════════════════════════════════════════════ */
     async function handleSubmit() {
+      event.preventDefault();
+
       const nome     = document.getElementById('nome').value.trim();
       const email    = document.getElementById('email').value.trim();
       const whatsapp = document.getElementById('whatsapp').value.replace(/\D/g, '');;
@@ -961,10 +963,13 @@
       btn.textContent = 'Enviando…';
 
       try {
-        const res  = await fetch(API_URL, {
-          method:  'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify({ nome, email, whatsapp })
+        const res = await fetch(API_URL, {
+          method: "POST",
+          body: new URLSearchParams({
+            nome,
+            email,
+            whatsapp
+          })
         });
 
         const data = await res.json();
